@@ -1,22 +1,7 @@
-FROM maven:3.8.4 AS builder
-
-WORKDIR /app
-
-COPY pom.xml .
-
-COPY src ./src
-
-RUN mvn clean package -DskipTests
-
 FROM openjdk:17
+VOLUME /tmp
+EXPOSE 8761
+ADD ./target/gatewayZull-0.0.1-SNAPSHOT.jar gatewayZull.jar
 
-WORKDIR /app
-
-# Copiar o JAR do serviço eurekaServer para o diretório de trabalho
-COPY eurekaServer.jar .
-
-# Define a variável de ambiente para a porta
-ENV SERVER_PORT=8761
-
-# Comando para rodar o serviço eurekaServer
-ENTRYPOINT ["java", "-jar", "eurekaServer.jar"]
+# Comando para rodar o serviço 
+ENTRYPOINT ["java", "-jar", "gatewayzull.jar"]
